@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 
+
 # Source the script2 file using a relative path
 SCRIPT_DIR=$(dirname "$0")
 source "./ddl.sh"
@@ -50,6 +51,7 @@ function database_operations() {
         select choice in CreateDB List_DataBase Connect_to_DataBase Drop_DataBase Quit; do
             case $choice in
                 CreateDB)
+                while true; do
                     read -p "-Please Enter Database name: " DBName
                     if validate_name "$DBName"; then
                         if [[ -e "$DBName" ]]; then
@@ -58,11 +60,13 @@ function database_operations() {
                             mkdir "$DBName" 2>/dev/null
                             if [[ $? -eq 0 ]]; then
                                 echo ":)Database '$DBName' created successfully."
+                                break 2
                             else
                                 echo ":(Error: Permission denied. Cannot create database '$DBName'."
                             fi
                         fi
                     fi
+                    done
                     break
                     ;;
                 List_DataBase)
@@ -71,25 +75,30 @@ function database_operations() {
                     break
                     ;;
                 Connect_to_DataBase)
+                while true; do
                     read -p "-Please Enter Database name to connect: " DBName
                     if validate_name "$DBName"; then
                         if [[ -d "$DBName" ]]; then
                             cd "$DBName"
                             echo ":)Connected to database '$DBName'"
                             table_operations  # Enter table operations menu
+                            break 2
                         else
                             echo ":(Database '$DBName' does not exist."
                         fi
                     fi
+                    done
                     break
                     ;;
                 Drop_DataBase)
+                while true; do
                     read -p "-Please Enter Database name to drop: " DBName
                     if validate_name "$DBName"; then
                         if [[ -d "$DBName" ]]; then
                             rm -r "$DBName" 2>/dev/null
                             if [[ $? -eq 0 ]]; then
                                 echo ":)Database '$DBName' dropped successfully."
+                                break 2
                             else
                                 echo ":(Error: Permission denied. Cannot drop database '$DBName'."
                             fi
@@ -97,6 +106,7 @@ function database_operations() {
                             echo ":(Database '$DBName' does not exist."
                         fi
                     fi
+                    done
                     break
                     ;;
                 Quit)
