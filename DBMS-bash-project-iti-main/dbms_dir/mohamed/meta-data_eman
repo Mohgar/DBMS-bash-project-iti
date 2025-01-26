@@ -1,0 +1,3 @@
+Column Name : Data Type : Primary Key
+pk : int: pk
+fk : str:
